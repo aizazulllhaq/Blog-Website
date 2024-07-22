@@ -1,0 +1,5 @@
+{
+    "api/v1/blogs":"/blogs",
+    "api/v1/blogs/tags":"/tags",
+    "api/v1/blogs/comments":"/comments"
+}
