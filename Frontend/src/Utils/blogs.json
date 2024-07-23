@@ -121,22 +121,22 @@
     }
   ],
   "tags": [
-    "JavaScript",
-    "Programming",
-    "Web Development",
-    "Hacking",
-    "React",
-    "Frontend Development",
-    "Node.js",
-    "Express",
-    "Python",
-    "Flask",
-    "Security",
-    "Asynchronous",
-    "Vue.js",
-    "Best Practices",
-    "Performance",
-    "Optimization"
+    "JAVASCRIPT",
+    "PROGRAMMING",
+    "WEB DEVELOPMENT",
+    "HACKING",
+    "REACT",
+    "FRONTEND DEVELOPMENT",
+    "NODE.JS",
+    "EXPRESS",
+    "PYTHON",
+    "FLASK",
+    "SECURITY",
+    "ASYNCHRONOUS",
+    "VUE.JS",
+    "BEST PRACTICES",
+    "PERFORMANCE",
+    "OPTIMIZATION"
   ],
   "comments": [
     {
@@ -179,6 +179,13 @@
       "blogId": "1",
       "apiId": "v1",
       "id": "OHnpJfO"
+    },
+    {
+      "name": "Aizaz Ul Haq",
+      "comment": "This is what i looking for \n\nThank you brother 🤩",
+      "blogId": "10",
+      "apiId": "v1",
+      "id": "DSz3E4V"
     }
   ]
 }

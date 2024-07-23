@@ -38,7 +38,7 @@ export async function getCommentByBlogId(cID) {
     const response = await axios.get(
       `http://localhost:8000/api/v1/comments?id=${cID}`
     );
-    return response.data;
+    return response.data[0];
   } catch (error) {
     console.log("Error occurred:", error.message);
   }
@@ -47,7 +47,7 @@ export async function getCommentByBlogId(cID) {
 export async function updateComment(comment, cID) {
   try {
     const response = await axios.put(
-      `http://localhost:8000/api/v1/comment?id=${cID}`,
+      `http://localhost:8000/api/v1/comments?id=${cID}`,
       comment,
       {
         headers: {
@@ -55,8 +55,20 @@ export async function updateComment(comment, cID) {
         },
       }
     );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log("Error occurred:", error.message);
+  }
+}
+
+export async function deleteComment(cID) {
+  try {
+    const response = await axios.delete(
+      `http://localhost:8000/api/v1/comments?id=${cID}`
+    );
+    return response;
+  } catch (error) {
+    console.log("Error Occurred : ", error.message);
   }
 }

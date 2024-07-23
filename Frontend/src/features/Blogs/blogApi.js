@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export async function createBlog(blogData) {
-  console.log(blogData);
   try {
     const response = await axios.post(
       "http://localhost:8000/api/v1/blogs",
@@ -92,7 +91,6 @@ export async function getFilterBlogs(searchTerm) {
     } else {
       response = await axios.get("http://localhost:8000/api/v1/blogs");
     }
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log("Error Occurred : ", error.message);

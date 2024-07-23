@@ -1,74 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFilterBlogsAsync } from "../../Blogs/blogSlice";
-import { commentsListAsync } from "../../comments/commentsSlice";
+import { deleteBlogAsync, getFilterBlogsAsync } from "../../Blogs/blogSlice";
+import {
+  commentsListAsync,
+  deleteCommentAsync,
+} from "../../comments/commentsSlice";
 import { Link } from "react-router-dom";
 
 const AdminManageBlogs = () => {
-  // This is placeholder data for blogs and comments. Replace with actual data fetching logic.
-  //   const blogs = [
-  //     {
-  //       id: 1,
-  //       title: "Aizaz Ul Haq",
-  //       content: "How to create Http Server in Nodejs",
-  //       uploadTime: "1 hour ago",
-  //       comments: [
-  //         {
-  //           id: 1,
-  //           name: "Ihtisham",
-  //           comment:
-  //             "This blog give me some internal knowledge which no one can share through social media 😍",
-  //           uploadTime: "20 mints ago",
-  //         },
-  //         { id: 2, name: "User 2", comment: "Comment 2" },
-  //       ],
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "Blog 2",
-  //       content: "Content 2",
-  //       uploadTime: "6 hour ago",
-  //       comments: [
-  //         {
-  //           id: 3,
-  //           name: "User 3",
-  //           comment: "Comment 3",
-  //           uploadTime: "31 mints ago",
-  //         },
-  //       ],
-  //     },
-  //   ];
-
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.blog.blogs);
   const comments = useSelector((state) => state.comment.comments);
-
   const [selectedBlogId, setSelectedBlogId] = useState(null);
+
+  const toggleComments = (id) => {
+    setSelectedBlogId(selectedBlogId === id ? null : id);
+  };
 
   useEffect(() => {
     dispatch(getFilterBlogsAsync(""));
 
     dispatch(commentsListAsync());
   }, [dispatch, selectedBlogId]);
-
-  const handleEditBlog = (id) => {
-    // Implement edit functionality
-    console.log(`Edit blog with id: ${id}`);
-  };
-
-  const handleDeleteBlog = (id) => {
-    // Implement delete functionality
-    console.log(`Delete blog with id: ${id}`);
-  };
-
-  const handleDeleteComment = (id) => {
-    // Implement delete functionality
-    console.log(`Delete comment with id: ${id}`);
-  };
-
-  const toggleComments = (id) => {
-    setSelectedBlogId(selectedBlogId === id ? null : id);
-  };
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg">
@@ -93,7 +46,7 @@ const AdminManageBlogs = () => {
                 Edit
               </Link>
               <button
-                onClick={() => handleDeleteBlog(blog.id)}
+                onClick={() => dispatch(deleteBlogAsync(blog.id))}
                 className="bg-red-600 hover:border-[1px]  border-red-600 border-[1px] border-transparent hover:border-red-600 hover:bg-transparent text-white py-2 px-4 rounded-[4px] mr-2"
               >
                 Delete
@@ -138,7 +91,9 @@ const AdminManageBlogs = () => {
                             Edit
                           </Link>
                           <button
-                            onClick={() => handleDeleteComment(comment.id)}
+                            onClick={() =>
+                              dispatch(deleteCommentAsync(comment.id))
+                            }
                             className="text-white py-1 px-3 rounded-[4px] bg-red-600 hover:border-[1px]  border-red-600 border-[1px] border-transparent hover:border-red-600 hover:bg-transparent"
                           >
                             Delete

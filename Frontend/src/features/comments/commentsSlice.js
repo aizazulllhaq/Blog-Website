@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   commentList,
+  deleteComment,
   getCommentByBlogId,
   newComment,
   updateComment,
@@ -33,7 +34,15 @@ export const getCommentsByBlogIdAsync = createAsyncThunk(
 export const updateCommentAsync = createAsyncThunk(
   "comment/updateComment",
   async ({ comment, cID }) => {
-    const response = await updateComment(comment, cID);
+    console.log(comment, cID);
+    return response;
+  }
+);
+
+export const deleteCommentAsync = createAsyncThunk(
+  "comment/deleteComment",
+  async (cID) => {
+    const response = await deleteComment(cID);
     return response;
   }
 );

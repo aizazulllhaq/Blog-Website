@@ -11,11 +11,12 @@ import {
 const CommentsSection = ({ state }) => {
   const { id, blogID, commentId } = useParams();
   const dispatch = useDispatch();
-  const comment = useSelector((state) => state.comment.comments);
+  const comment = useSelector((state) => state.comment.comment);
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -26,7 +27,7 @@ const CommentsSection = ({ state }) => {
       dispatch(newCommentAsync(commentData));
     } else {
       commentData = { ...data, blogId: blogID };
-      dispatch(updateCommentAsync({ commentData, commentId }));
+      dispatch(updateCommentAsync({ comment: commentData, cID: commentId }));
     }
     reset();
   };
@@ -35,7 +36,14 @@ const CommentsSection = ({ state }) => {
     if (state === "edit") {
       dispatch(getCommentsByBlogIdAsync(commentId));
     }
-  }, []);
+  }, [commentId]);
+
+  useEffect(() => {
+    if (state === "edit" && comment) {
+      setValue("name", comment.name);
+      setValue("comment", comment.comment);
+    }
+  }, [comment, setValue]);
 
   return (
     <section className="max-w-[1000px] mx-auto rounded-lg shadow-md p-[30px]">

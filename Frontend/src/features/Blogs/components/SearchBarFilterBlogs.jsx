@@ -20,7 +20,7 @@ const SearchBarFilterBlogs = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     if (searchTerm.length) {
-      if (blogsTags.includes(searchTerm)) {
+      if (blogsTags.includes(searchTerm.toUpperCase())) {
         dispatch(getFilterBlogsAsync(searchTerm));
       } else {
         setNoResults(true);
@@ -33,8 +33,10 @@ const SearchBarFilterBlogs = () => {
   }, [blogs]);
 
   useEffect(() => {
-    dispatch(getFilterBlogsAsync(searchTerm));
-  }, []);
+    if (searchTerm === "") {
+      dispatch(getFilterBlogsAsync(searchTerm));
+    }
+  }, [searchTerm]);
 
   return (
     <section className="w-full min-h-screen flex flex-col">
