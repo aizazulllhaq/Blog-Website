@@ -5,7 +5,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="w-full relative top-0 left-0 z-[50] py-7 md:px-[20px]">
+    <section className="w-full relative top-0 left-0 z-[50] py-7 md:px-[20px] bg-gray-950">
       <div className="max-w-[1200px] mx-auto flex justify-between text-white md:px-0 px-[20px]">
         <div className="left">
           <Link
@@ -30,10 +30,10 @@ const Navbar = () => {
               open ? "absolute top-[90%] left-[10%]" : "hidden"
             }`}
           >
-            <li className="md:px-[15px] px-[10px] md:py-[10px] py-[5px] rounded-[4px] hover:bg-blue-400 hover:text-white ">
+            <li className="md:px-[15px] px-[10px] md:py-[10px] py-[5px] border border-red-400 rounded-[4px] hover:bg-red-400 hover:text-white ">
               <Link to={"/"}>Home</Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 to={"/signin"}
                 className="md:px-[15px] px-[10px] md:py-[10px] py-[5px] border border-red-400 rounded-[4px] hover:bg-red-400 hover:text-white "
@@ -48,7 +48,7 @@ const Navbar = () => {
               >
                 Register
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

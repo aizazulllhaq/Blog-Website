@@ -14,7 +14,7 @@ export const createBlogAsync = createAsyncThunk(
   "blog/createBlog",
   async (blogData) => {
     const response = await createBlog(blogData);
-    return response;
+    return response.data;
   }
 );
 
@@ -85,9 +85,8 @@ export const blogSlice = createSlice({
       .addCase(createBlogAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(createBlogAsync.fulfilled, (state, action) => {
+      .addCase(createBlogAsync.fulfilled, (state) => {
         state.status = "idle";
-        state.blog = action.payload;
       })
       .addCase(createBlogAsync.rejected, (state, action) => {
         state.status = "idle";
@@ -160,6 +159,5 @@ export const blogSlice = createSlice({
       });
   },
 });
-
 
 export default blogSlice.reducer;

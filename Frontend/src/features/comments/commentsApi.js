@@ -18,10 +18,15 @@ export async function newComment(commentData) {
 }
 
 export async function commentList(blogId) {
+  let response;
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/v1/comments?blogId=${blogId}`
-    );
+    if (blogId) {
+      response = await axios.get(
+        `http://localhost:8000/api/v1/comments?blogId=${blogId}`
+      );
+    } else {
+      response = await axios.get("http://localhost:8000/api/v1/comments");
+    }
     return response;
   } catch (error) {
     console.log("Error occurred:", error.message);

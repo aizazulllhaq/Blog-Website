@@ -5,8 +5,10 @@ import PageNotFound from "./Pages/PageNotFound";
 import Login from "./features/auth/components/Login";
 import Register from "./features/auth/components/Register";
 import BlogDetailPage from "./Pages/BlogDetailPage";
-import BlogPost from "./Utils/BlogPost";
 import MainPage from "./Utils/Hero";
+import AdminLoginPage from "./Pages/AdminLoginPage";
+import AdminDashboardPage from "./Pages/AdminDashboardPage";
+import NewBlogPage from "./Pages/NewBlogPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -28,9 +30,23 @@ const App = () => {
     },
     {
       path: "/blogPost",
-      element: (
-        <MainPage/>
-      ),
+      element: <MainPage />,
+    },
+    {
+      path: "/admin-login",
+      element: <AdminLoginPage />,
+    },
+    {
+      path: "/admin-dashboard",
+      element: <AdminDashboardPage />,
+    },
+    {
+      path: "/blogs/new",
+      element: <NewBlogPage />,
+    },
+    {
+      path: "/blogs/edit/:id",
+      element: <NewBlogPage state={"edit"} />,
     },
     {
       path: "*",

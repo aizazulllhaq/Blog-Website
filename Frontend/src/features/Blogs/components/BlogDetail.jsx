@@ -56,7 +56,7 @@ const BlogDetail = ({blog}) => {
           <p className="text-gray-600">{blog.uploadTime}</p>
         </div>
       </div>
-      <BlogPost content={content} />
+      <BlogPost content={blog.content || content} />
     </section>
   );
 };
