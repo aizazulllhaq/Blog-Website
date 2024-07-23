@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { commentList, newComment } from "./commentsApi";
+import {
+  commentList,
+  getCommentByBlogId,
+  newComment,
+  updateComment,
+} from "./commentsApi";
 
 export const newCommentAsync = createAsyncThunk(
   "comment/newComment",
@@ -17,11 +22,28 @@ export const commentsListAsync = createAsyncThunk(
   }
 );
 
+export const getCommentsByBlogIdAsync = createAsyncThunk(
+  "comment/getCommentByBlogId",
+  async (cID) => {
+    const response = await getCommentByBlogId(cID);
+    return response;
+  }
+);
+
+export const updateCommentAsync = createAsyncThunk(
+  "comment/updateComment",
+  async ({ comment, cID }) => {
+    const response = await updateComment(comment, cID);
+    return response;
+  }
+);
+
 const initialState = {
   status: "idle",
   error: null,
   isComment: false,
   comments: null,
+  comment: null,
 };
 
 export const commentSlice = createSlice({
@@ -33,7 +55,7 @@ export const commentSlice = createSlice({
       .addCase(newCommentAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(newCommentAsync.fulfilled, (state,action) => {
+      .addCase(newCommentAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.isComment = true;
         state.comments.push(action.payload);
@@ -50,6 +72,28 @@ export const commentSlice = createSlice({
         state.status = "idle";
       })
       .addCase(commentsListAsync.rejected, (state, action) => {
+        state.status = "idle";
+        state.error = action.error;
+      })
+      .addCase(getCommentsByBlogIdAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getCommentsByBlogIdAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.comment = action.payload;
+      })
+      .addCase(getCommentsByBlogIdAsync.rejected, (state, action) => {
+        state.status = "idle";
+        state.error = action.error;
+      })
+      .addCase(updateCommentAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateCommentAsync.fulfilled, (state) => {
+        state.status = "idle";
+        state.isComment = true;
+      })
+      .addCase(updateCommentAsync.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.error;
       });

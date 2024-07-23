@@ -9,6 +9,7 @@ import MainPage from "./Utils/Hero";
 import AdminLoginPage from "./Pages/AdminLoginPage";
 import AdminDashboardPage from "./Pages/AdminDashboardPage";
 import NewBlogPage from "./Pages/NewBlogPage";
+import EditCommentPage from "./Pages/EditCommentPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -47,6 +48,10 @@ const App = () => {
     {
       path: "/blogs/edit/:id",
       element: <NewBlogPage state={"edit"} />,
+    },
+    {
+      path:"/blogs/:blogID/comment/:commentId",
+      element:<EditCommentPage/>
     },
     {
       path: "*",

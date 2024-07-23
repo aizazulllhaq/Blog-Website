@@ -20,14 +20,14 @@ export const createBlogAsync = createAsyncThunk(
 
 export const editBlogAsync = createAsyncThunk("blog/editBlog", async (id) => {
   const response = await editBlog(id);
-  return response;
+  return response.data[0];
 });
 
 export const updateBlogAsync = createAsyncThunk(
   "blog/updateBlog",
-  async (blogData) => {
-    const response = await updateBlog(blogData);
-    return response;
+  async ({blogData,id}) => {
+    const response = await updateBlog(blogData,id);
+    return response.data;
   }
 );
 

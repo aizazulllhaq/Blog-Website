@@ -61,11 +61,6 @@ const AdminManageBlogs = () => {
     console.log(`Delete blog with id: ${id}`);
   };
 
-  const handleEditComment = (id) => {
-    // Implement edit functionality
-    console.log(`Edit comment with id: ${id}`);
-  };
-
   const handleDeleteComment = (id) => {
     // Implement delete functionality
     console.log(`Delete comment with id: ${id}`);
@@ -93,7 +88,6 @@ const AdminManageBlogs = () => {
             <div className="mt-4 flex flex-wrap">
               <Link
                 to={`/blogs/edit/${blog.id}`}
-                onClick={() => handleEditBlog(blog.id)}
                 className="bg-blue-600 hover:border-[1px]  border-blue-600 border-[1px] border-transparent hover:border-blue-600 hover:bg-transparent text-white py-2 px-4 rounded-[4px] mr-2"
               >
                 Edit
@@ -137,12 +131,12 @@ const AdminManageBlogs = () => {
                         </div>
 
                         <div className="mt-2">
-                          <button
-                            onClick={() => handleEditComment(comment.id)}
+                          <Link
+                            to={`/blogs/${blog.id}/comment/${comment.id}`}
                             className="text-white py-1 px-3 rounded-[4px] bg-blue-600 hover:border-[1px]  border-blue-600 border-[1px] border-transparent hover:border-blue-600 hover:bg-transparent mr-2"
                           >
                             Edit
-                          </button>
+                          </Link>
                           <button
                             onClick={() => handleDeleteComment(comment.id)}
                             className="text-white py-1 px-3 rounded-[4px] bg-red-600 hover:border-[1px]  border-red-600 border-[1px] border-transparent hover:border-red-600 hover:bg-transparent"

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export async function createBlog(blogData) {
-  console.log(blogData)
+  console.log(blogData);
   try {
     const response = await axios.post(
       "http://localhost:8000/api/v1/blogs",
@@ -18,20 +18,22 @@ export async function createBlog(blogData) {
 
 export async function editBlog(id) {
   try {
-    const response = await axios.get(`http://localhost:8000/api/v1/blog/${id}`);
+    const response = await axios.get(
+      `http://localhost:8000/api/v1/blogs?id=${id}`
+    );
     return response;
   } catch (error) {
     console.log("Error Occurred : ", error.message);
   }
 }
 
-export async function updateBlog(blogData) {
+export async function updateBlog(blogData, id) {
   try {
-    const response = await axios.update(
-      "http://localhost:8000/api/v1/blog",
+    const response = await axios.put(
+      `http://localhost:8000/api/v1/blogs?id=${id}`,
       blogData,
       {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       }
     );
     return response;
@@ -53,7 +55,9 @@ export async function deleteBlog(id) {
 
 export async function getBlog(id) {
   try {
-    const response = await axios.get(`http://localhost:8000/api/v1/blogs?id=${id}`);
+    const response = await axios.get(
+      `http://localhost:8000/api/v1/blogs?id=${id}`
+    );
     return response;
   } catch (error) {
     console.log("Error Occurred : ", error.message);
