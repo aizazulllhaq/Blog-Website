@@ -7,7 +7,7 @@ const EditCommentPage = () => {
   return (
     <>
       <Navbar />
-      <section className="w-full h-[100vh] bg-gray-950 py-[20px]">
+      <section className="w-full h-[100vh] bg-gray-950 py-[20px] md:px-0 px-[10px]">
         <div className="max-w-[1050px] mx-auto bg-gray-800 rounded-[6px]">
           <CommentsSection state={"edit"} />
         </div>

@@ -25,18 +25,18 @@ const AdminManageBlogs = () => {
 
   return (
     <div className="bg-gray-800 p-6 rounded-lg">
-      <h2 className="text-2xl font-bold text-white mb-4">
+      <h2 className="md:text-2xl text-xl font-bold text-white mb-4">
         Manage Blogs & Comments
       </h2>
       {blogs &&
         blogs.map((blog) => (
           <div key={blog.id} className="bg-gray-900 p-4 mb-4 rounded-lg">
-            <h3 className="text-xl font-semibold text-white py-[5px]">
+            <h3 className="md:text-xl text-md font-semibold text-white py-[5px]">
               {blog.title}
             </h3>
             <div className="flex justify-between">
-              <p className="text-gray-400 py-[5px]">Author : {blog.author}</p>
-              <p className="text-gray-400">{blog.uploadTime}</p>
+              <p className="text-gray-400 py-[5px] md:text-md text-sm">Author : {blog.author}</p>
+              <p className="text-gray-400 md:text-md text-sm">{blog.uploadTime}</p>
             </div>
             <div className="mt-4 flex flex-wrap">
               <Link
@@ -47,13 +47,13 @@ const AdminManageBlogs = () => {
               </Link>
               <button
                 onClick={() => dispatch(deleteBlogAsync(blog.id))}
-                className="bg-red-600 hover:border-[1px]  border-red-600 border-[1px] border-transparent hover:border-red-600 hover:bg-transparent text-white py-2 px-4 rounded-[4px] mr-2"
+                className="bg-red-600 hover:border-[1px]  border-red-600 border-[1px] border-transparent hover:border-red-600 hover:bg-transparent text-white md:py-2 py-1 md:px-4 px-2 rounded-[4px] mr-2"
               >
                 Delete
               </button>
               <button
                 onClick={() => toggleComments(blog.id)}
-                className="bg-green-600 hover:border-[1px]  border-green-600 border-[1px] border-transparent hover:border-green-600 hover:bg-transparent text-white py-2 px-4 rounded-[4px] mr-2"
+                className="bg-green-600 hover:border-[1px]  border-green-600 border-[1px] border-transparent hover:border-green-600 hover:bg-transparent text-white md:py-2 py-1 md:px-4 px-2 rounded-[4px] mr-2"
               >
                 Comments (
                 {comments && comments.filter((c) => c.blogId == blog.id).length}
@@ -62,7 +62,7 @@ const AdminManageBlogs = () => {
             </div>
             {selectedBlogId == blog.id && (
               <div className="mt-4 bg-gray-800 p-4 rounded-lg">
-                <h4 className="text-xl font-semibold text-white">Comments</h4>
+                <h4 className="md:text-xl text-md font-semibold text-white md:py-0 py-2">Comments</h4>
                 {comments &&
                   comments
                     .filter((c) => c.blogId == blog.id)
@@ -71,14 +71,14 @@ const AdminManageBlogs = () => {
                         key={comment.id}
                         className="bg-gray-900 p-3 mb-3 rounded-lg"
                       >
-                        <h5 className="text-lg font-semibold text-white py-[5px]">
+                        <h5 className="md:text-lg text-md font-semibold text-white py-[5px]">
                           {comment.name}
                         </h5>
-                        <div className="flex justify-between">
-                          <p className="text-gray-400 py-[5px]">
+                        <div className="flex justify-between md:flex-nowrap flex-wrap md:space-y-0 space-y-[10px]">
+                          <p className="text-gray-400 py-[5px] md:text-md text-sm">
                             {comment.comment}
                           </p>
-                          <p className="text-gray-400">
+                          <p className="text-gray-400 md:text-md text-sm">
                             {comment.uploadTime || "1 hour ago"}
                           </p>
                         </div>

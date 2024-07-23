@@ -68,12 +68,12 @@ const NewBlog = ({ state }) => {
   };
 
   return (
-    <div className="max-w-[800px] mx-auto py-[20px]">
+    <div className="max-w-[800px] mx-auto py-[20px] px-[10px]">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="p-6 bg-gray-800 text-white rounded-lg"
       >
-        <h2 className="text-2xl font-bold mb-4">
+        <h2 className="md:text-2xl text-xl font-bold mb-4">
           {state === "edit" ? "Edit Blog" : "Create New Blog"}
         </h2>
 

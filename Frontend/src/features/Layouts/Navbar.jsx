@@ -10,7 +10,7 @@ const Navbar = () => {
         <div className="left">
           <Link
             to={"/"}
-            className="md:text-2xl text-xl cursor-pointer md:px-[15px] px-[10px] md:py-[10px] py-[5px] rounded-[5px] shadow-inner text-red-400 font-semibold shadow-red-400 hover:text-white hover:shadow-2xl hover:shadow-red-400"
+            className="md:text-2xl sm:text-xl text-md cursor-pointer md:px-[15px] px-[10px] md:py-[10px] py-[5px] rounded-[5px] shadow-inner text-red-400 font-semibold shadow-red-400 hover:text-white hover:shadow-2xl hover:shadow-red-400"
           >
             LET'S LEARN CODE
           </Link>
@@ -19,10 +19,10 @@ const Navbar = () => {
         <div className="right">
           <button
             onClick={() => setOpen(!open)}
-            className="text-xl sm:text-white bg-yellow-500 md:px-0 px-1 md:py-0 py-1 absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer md:hidden md:mr-0 mr-[10px]"
+            className="text-xl sm:text-white bg-yellow-500 md:px-0 px-1 absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer md:hidden md:mr-0 mr-[10px]"
           >
             {
-              open ? "O" : "X"
+              open ? "o" : "x"
             }
           </button>
           <ul

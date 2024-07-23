@@ -47,10 +47,12 @@ const CommentsSection = ({ state }) => {
 
   return (
     <section className="max-w-[1000px] mx-auto rounded-lg shadow-md p-[30px]">
-      <hr className="opacity-20 border-2 border-gray-700 my-[20px]" />
+      {state !== "edit" && (
+        <hr className="opacity-20 border-2 border-gray-700 my-[20px]" />
+      )}
 
       <h2
-        className={`text-2xl font-bold mb-4 ${
+        className={`md:text-2xl text-xl font-bold mb-4 ${
           state === "edit" ? "text-white text-center" : ""
         }`}
       >
