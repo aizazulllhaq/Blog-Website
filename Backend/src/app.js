@@ -13,10 +13,17 @@ app.use(cookieParser());
 // Routers
 import usersRouter from "./routers/Users/Users.Routes.js";
 import adminUsersRouter from "./routers/Users/Admin.Users.Routes.js";
+import adminBlogRouter from "./routers/Blogs/Admin.Blog.Routes.js";
+import commentRouter from "./routers/Comment/Comment.Routes.js";
+import adminCommentRouter from "./routers/Comment/Admin.Comment.Routes.js";
+import blogsRouter from "./routers/Blogs/Blog.Routes.js";
 
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/admin/users", adminUsersRouter);
-app.use("/api/v1/")
+app.use("/api/v1/blogs", blogsRouter);
+app.use("/api/v1/admin/blogs", adminBlogRouter);
+app.use("/api/v1/comments", commentRouter);
+app.use("/api/v1/admin/comments", adminCommentRouter);
 
 // Route Doesn't Exists ( 404 )
 app.use("*", (req, res, next) => {

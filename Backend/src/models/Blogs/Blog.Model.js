@@ -14,10 +14,12 @@ const blogSchema = new Schema(
             type: String,
             required: true,
         },
-        tagsArray: {
-            type: String,
-            required: true,
-        },
+        tags: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "BlogsTags",
+            },
+        ],
         author_id: {
             type: Schema.Types.ObjectId,
             ref: "User",

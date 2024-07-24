@@ -1,6 +1,6 @@
 import { check } from "express-validation";
 
-export const blogValidation = [
+export const createBlogValidation = [
     check("title", "Title is Required").not().isEmpty(),
     check("content", "Content is Required").not().isEmpty(),
     check("author", "Author is Required").not().isEmpty(),
@@ -24,4 +24,12 @@ export const blogValidation = [
             );
         }
     }),
+];
+
+export const getBlogValidation = [
+    check("blogId")
+        .notEmpty()
+        .withMessage("blogId is required")
+        .isMongoId()
+        .withMessage("Invalid blogId format"),
 ];

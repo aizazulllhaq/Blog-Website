@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { blogValidation } from "../../utils/Validation/Blog.Validation";
+import { createBlogValidation } from "../../utils/Validation/Blog.Validation";
 import { validate } from "express-validation";
 import {
     createBlog,
@@ -13,7 +13,7 @@ const adminBlogRouter = Router();
 
 // api/v1/admin/blogs/new
 adminBlogRouter
-    .post("/new", blogValidation, validate, createBlog)
+    .post("/new", createBlogValidation, validate, createBlog)
     .get("/", getAllBlogs)
     .get("/:blogId", editBlog)
     .put("/:blogId", updateBlog)
