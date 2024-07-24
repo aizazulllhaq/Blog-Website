@@ -11,6 +11,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routers
+import usersRouter from "./routers/Users/Users.Routes.js";
+import adminUsersRouter from "./routers/Users/Admin.Users.Routes.js";
+
+app.use("/api/v1/users", usersRouter);
+app.use("/api/v1/admin/users", adminUsersRouter);
+app.use("/api/v1/")
 
 // Route Doesn't Exists ( 404 )
 app.use("*", (req, res, next) => {
@@ -27,6 +33,5 @@ app.use((err, req, res, next) => {
 
     res.status(statusCode).json({ success, message });
 });
-
 
 export default app;

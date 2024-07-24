@@ -14,6 +14,10 @@ const commentSchema = new Schema(
             type: String,
             required: true,
         },
+        uploadTime: {
+            type: Date,
+            default: Date.now(),
+        },
     },
     {
         timestamps: true,
