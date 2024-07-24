@@ -8,7 +8,6 @@ const commentRouter = Router();
 
 commentRouter
     .get("/new" ,commentValidation, validate, createComment)
-    .get("/:id", validate, getCommentById)
     .get("/:blogId",validate,getAllBlogComments);
 
 export default commentRouter;

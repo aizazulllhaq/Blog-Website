@@ -6,9 +6,13 @@ const commentSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Blog",
         },
-        user_id: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
+        // user_id: {
+        //     type: Schema.Types.ObjectId,
+        //     ref: "User",
+        // },
+        name: {
+            type: String,
+            required: true,
         },
         content: {
             type: String,
