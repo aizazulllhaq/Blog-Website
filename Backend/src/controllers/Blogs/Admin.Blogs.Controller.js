@@ -44,6 +44,7 @@ export const getAllBlogs = wrapAsync(async (req, res, next) => {
         blog.author = blog.author.username;
         return blogObject;
     });
+    
     res.status(200).json(new ApiResponse(true, "All Blogs", uBlogs));
 });
 

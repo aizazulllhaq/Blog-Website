@@ -6,10 +6,12 @@ export const createComment = wrapAsync(async (req, res, next) => {
     const { blogId } = req.params;
     const { name, comment } = req.body;
 
-    await Comment.create({ name, comment, blog_id: blogId });
+    const newComment = (
+        await Comment.create({ name, comment, blog_id: blogId })
+    );
 
     res.status(201).json(
-        new ApiResponse(true, "Comment Create Successfully", {})
+        new ApiResponse(true, "Comment Create Successfully", newComment)
     );
 });
 
@@ -17,7 +19,7 @@ export const getAllBlogComments = wrapAsync(async (req, res, next) => {
     const { blogId } = req.params;
 
     const blogComments = await Comment.find({ blog_id: blogId }).select(
-        "name comment -_id"
+        "name comment uploadTime -_id"
     );
 
     if (!blogComments)

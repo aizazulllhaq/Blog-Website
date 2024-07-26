@@ -28,7 +28,7 @@ const upload = multer({
         }
     },
 });
-// api/v1/admin/blogs/new
+// api/v1/admin/blogs/
 adminBlogRouter
     .post(
         "/new",

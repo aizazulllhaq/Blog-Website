@@ -9,9 +9,9 @@ import {
 
 export const newCommentAsync = createAsyncThunk(
   "comment/newComment",
-  async (commentData) => {
-    const response = await newComment(commentData);
-    return response.data;
+  async ({ commentData, blogId }) => {
+    const response = await newComment(commentData, blogId);
+    return response;
   }
 );
 
@@ -19,7 +19,7 @@ export const commentsListAsync = createAsyncThunk(
   "comment/commentsList",
   async (blogId) => {
     const response = await commentList(blogId);
-    return response.data;
+    return response;
   }
 );
 

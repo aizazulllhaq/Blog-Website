@@ -15,7 +15,10 @@ export const getBlogsTags = wrapAsync(async (req, res, next) => {
 export const getBlog = wrapAsync(async (req, res, next) => {
     const { blogId } = req.params;
 
-    const blog = await Blog.findById(blogId).populate("tags", "name").exec();
+    const blog = await Blog.findById(blogId)
+        .populate("author", "username -_id")
+        .populate("tags", "name -_id")
+        .exec();
 
     if (!blog) return next(new ApiError(404, "Blog Not Found", false));
 
@@ -29,20 +32,49 @@ export const getBlog = wrapAsync(async (req, res, next) => {
 
 export const getAllORFilterBlogs = wrapAsync(async (req, res, next) => {
     const { search } = req.query;
+    console.log(search);
 
     if (!search || search.length === 0) {
-        const blogs = await Blog.find({});
+        const blogs = await Blog.find({})
+            .populate("author", "username -_id")
+            .populate("tags", "name -_id")
+            .exec();
 
-        return res.status(200).json(new ApiResponse(true, "All Blogs", blogs));
+        const transformedBlogs = blogs.map((blog) => {
+            const tags = blog.tags.map((tag) => tag.name);
+            return {
+                ...blog.toObject(),
+                author: blog.author.username,
+                tags: tags,
+            };
+        });
+
+        return res
+            .status(200)
+            .json(new ApiResponse(true, "All Blogs", transformedBlogs));
     }
 
-    const tag = await BlogsTags.findOne({ name: search }).select("_id");
+    const tag = await BlogsTags.findOne({ name: search });
 
     if (!tag) return next(new ApiError(404, "Blog Not Found", false));
 
-    const filterBlogs = await Blog.findOne({ tags: tag._id })
-        .populate("tags", "name")
+    const blogs = await Blog.find({ tags: tag._id })
+        .populate("author", "username -_id")
+        .populate("tags", "name -_id")
         .exec();
 
-    res.status(200).json(new ApiResponse(true, "Filter Blogs", filterBlogs));
+    const transformedBlogs = blogs.map((blog) => {
+        const tags = blog.tags.map((tag) => tag.name);
+        return {
+            ...blog.toObject(),
+            author: blog.author.username,
+            tags: tags,
+        };
+    });
+
+    console.log(transformedBlogs);
+
+    res.status(200).json(
+        new ApiResponse(true, "Filter Blogs", transformedBlogs)
+    );
 });

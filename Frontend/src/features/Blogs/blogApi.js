@@ -3,7 +3,7 @@ import axios from "axios";
 export async function createBlog(blogData) {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/v1/blogs",
+      "http://localhost:8080/api/v1/admin/blogs/new",
       blogData,
       {
         "Content-Type": "application/json",
@@ -15,10 +15,10 @@ export async function createBlog(blogData) {
   }
 }
 
-export async function editBlog(id) {
+export async function editBlog(blogId) {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/v1/blogs?id=${id}`
+      `http://localhost:8080/api/v1/admin/blogs/${blogId}`
     );
     return response;
   } catch (error) {
@@ -26,10 +26,10 @@ export async function editBlog(id) {
   }
 }
 
-export async function updateBlog(blogData, id) {
+export async function updateBlog(blogData, blogId) {
   try {
     const response = await axios.put(
-      `http://localhost:8000/api/v1/blogs?id=${id}`,
+      `http://localhost:8080/api/v1/admin/blogs/${blogId}`,
       blogData,
       {
         "Content-Type": "multipart/form-data",
@@ -41,10 +41,10 @@ export async function updateBlog(blogData, id) {
   }
 }
 
-export async function deleteBlog(id) {
+export async function deleteBlog(blogId) {
   try {
     const response = await axios.delete(
-      `http://localhost:8000/api/v1/blog/${id}`
+      `http://localhost:8080/api/v1/admin/blogs/${blogId}`
     );
     return response;
   } catch (error) {
@@ -52,12 +52,12 @@ export async function deleteBlog(id) {
   }
 }
 
-export async function getBlog(id) {
+export async function getBlog(blogId) {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/v1/blogs?id=${id}`
+      `http://localhost:8080/api/v1/blogs/${blogId}`
     );
-    return response;
+    return response.data.data;
   } catch (error) {
     console.log("Error Occurred : ", error.message);
   }
@@ -65,7 +65,9 @@ export async function getBlog(id) {
 
 export async function getAllBlogs() {
   try {
-    const response = await axios.get("http://localhost:8000/api/v1/blog/all");
+    const response = await axios.get(
+      "http://localhost:8080/api/v1/admin/blogs"
+    );
     return response;
   } catch (error) {
     console.log("Error Occurred : ", error.message);
@@ -74,8 +76,10 @@ export async function getAllBlogs() {
 
 export async function getBlogsTags() {
   try {
-    const response = await axios.get("http://localhost:8000/api/v1/tags");
-    return response;
+    const response = await axios.get(
+      "http://localhost:8080/api/v1/blogs/blogstags"
+    );
+    return response.data.data;
   } catch (error) {
     console.log("Error Occurred : ", error.message);
   }
@@ -86,12 +90,12 @@ export async function getFilterBlogs(searchTerm) {
   try {
     if (searchTerm !== "") {
       response = await axios.get(
-        `http://localhost:8000/api/v1/blogs?tagsArray_like=${searchTerm}`
+        `http://localhost:8080/api/v1/blogs?search=${searchTerm}`
       );
     } else {
-      response = await axios.get("http://localhost:8000/api/v1/blogs");
+      response = await axios.get("http://localhost:8080/api/v1/blogs");
     }
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.log("Error Occurred : ", error.message);
   }

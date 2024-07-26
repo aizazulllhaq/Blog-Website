@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export async function newComment(commentData) {
+export async function newComment(commentData, blogId) {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/v1/comments",
+      `http://localhost:8080/api/v1/comments/${blogId}/new`,
       commentData,
       {
         headers: {
@@ -11,7 +11,7 @@ export async function newComment(commentData) {
         },
       }
     );
-    return response;
+    return response.data.data;
   } catch (error) {
     console.log("Error Occurred : ", error.message);
   }
@@ -22,21 +22,21 @@ export async function commentList(blogId) {
   try {
     if (blogId) {
       response = await axios.get(
-        `http://localhost:8000/api/v1/comments?blogId=${blogId}`
+        `http://localhost:8080/api/v1/comments/${blogId}`
       );
     } else {
-      response = await axios.get("http://localhost:8000/api/v1/comments");
+      response = await axios.get("http://localhost:8080/api/v1/comments");
     }
-    return response;
+    return response.data.data;
   } catch (error) {
     console.log("Error occurred:", error.message);
   }
 }
 
-export async function getCommentByBlogId(cID) {
+export async function getCommentByBlogId(blogId) {
   try {
     const response = await axios.get(
-      `http://localhost:8000/api/v1/comments?id=${cID}`
+      `http://localhost:8080/api/v1/comments/${blogId}`
     );
     return response.data[0];
   } catch (error) {
@@ -47,7 +47,7 @@ export async function getCommentByBlogId(cID) {
 export async function updateComment(comment, cID) {
   try {
     const response = await axios.put(
-      `http://localhost:8000/api/v1/comments?id=${cID}`,
+      `http://localhost:8080/api/v1/admin/comments/${cID}`,
       comment,
       {
         headers: {
@@ -55,7 +55,6 @@ export async function updateComment(comment, cID) {
         },
       }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log("Error occurred:", error.message);
@@ -65,7 +64,7 @@ export async function updateComment(comment, cID) {
 export async function deleteComment(cID) {
   try {
     const response = await axios.delete(
-      `http://localhost:8000/api/v1/comments?id=${cID}`
+      `http://localhost:8080/api/v1/admin/comments/${cID}`
     );
     return response;
   } catch (error) {

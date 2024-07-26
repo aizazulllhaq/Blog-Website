@@ -13,15 +13,16 @@ const SearchBarFilterBlogs = () => {
     dispatch(getBlogsTagsAsync());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("tags assdsdre : ", blogsTags); // This will log after state is updated
-  }, [blogsTags]);
-
   const handleSearch = async (e) => {
     e.preventDefault();
+    console.log("search is ",searchTerm)
+    console.log("tags under search is ",blogsTags)
+
     if (searchTerm.length) {
       if (blogsTags.includes(searchTerm.toUpperCase())) {
         dispatch(getFilterBlogsAsync(searchTerm));
+    console.log("a search is ",searchTerm)
+
       } else {
         setNoResults(true);
       }
@@ -78,20 +79,20 @@ const SearchBarFilterBlogs = () => {
             blogs.map((blog, index) => (
               <Link
                 key={index}
-                to={`/blogs/${blog.id}`}
+                to={`/blogs/${blog._id}`}
                 className="blog grid grid-rows-[1fr,auto,auto] gap-4 text-white p-5 max-w-[460px] bg-gray-950 border-[1px] border-gray-900 hover:bg-blue-950 hover:opacity-80 rounded-[7px]"
               >
                 <div className="img-title">
                   <div className="relative w-full h-[200px] overflow-hidden">
                     <img
-                      src={blog.img}
+                      src={blog.image}
                       alt={blog.title}
                       className="absolute top-0 left-0 w-full h-full rounded-[4px]"
                     />
                   </div>
                   <div className="py-[10px]">
                     <Link
-                      to={`blogs/${blog.id}`}
+                      to={`blogs/${blog._id}`}
                       className="title text-2xl font-bold"
                     >
                       {blog.title}
@@ -103,7 +104,7 @@ const SearchBarFilterBlogs = () => {
                   <p className="uploadTime opacity-40">{blog.uploadTime}</p>
                 </div>
                 <div className="category opacity-60 space-x-[10px] flex flex-wrap space-y-[5px] text-center  items-center">
-                  {blog.tagsArray.map((item, index) => (
+                  {blog.tags.map((item, index) => (
                     <span
                       key={index}
                       className="font-thin bg-gray-900 opacity-80 py-[5px] px-[6px] rounded-md"

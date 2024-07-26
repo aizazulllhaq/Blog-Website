@@ -39,9 +39,9 @@ export const deleteBlogAsync = createAsyncThunk(
   }
 );
 
-export const getBlogAsync = createAsyncThunk("blog/getBlog", async (id) => {
-  const response = await getBlog(id);
-  return response.data[0];
+export const getBlogAsync = createAsyncThunk("blog/getBlog", async (blogId) => {
+  const response = await getBlog(blogId);
+  return response;
 });
 
 export const getAllBlogsAsync = createAsyncThunk(
@@ -56,7 +56,7 @@ export const getBlogsTagsAsync = createAsyncThunk(
   "blog/getBlogsTags",
   async () => {
     const response = await getBlogsTags();
-    return response.data;
+    return response;
   }
 );
 

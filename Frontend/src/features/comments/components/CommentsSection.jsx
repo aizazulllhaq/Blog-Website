@@ -8,8 +8,7 @@ import {
   updateCommentAsync,
 } from "../commentsSlice";
 
-const CommentsSection = ({ state }) => {
-  const { id, blogID, commentId } = useParams();
+const CommentsSection = ({ state,blogID }) => {
   const dispatch = useDispatch();
   const comment = useSelector((state) => state.comment.comment);
   const {
@@ -23,20 +22,20 @@ const CommentsSection = ({ state }) => {
   const handleOnSubmit = (data) => {
     let commentData;
     if (state !== "edit") {
-      commentData = { ...data, blogId: id };
-      dispatch(newCommentAsync(commentData));
+      commentData = { ...data, blog_id: blogID };
+      dispatch(newCommentAsync({ commentData, blogId:blogID }));
     } else {
       commentData = { ...data, blogId: blogID };
-      dispatch(updateCommentAsync({ comment: commentData, cID: commentId }));
+      dispatch(updateCommentAsync({ comment: commentData  }));
     }
     reset();
   };
 
   useEffect(() => {
     if (state === "edit") {
-      dispatch(getCommentsByBlogIdAsync(commentId));
+      dispatch(getCommentsByBlogIdAsync());
     }
-  }, [commentId]);
+  }, []);
 
   useEffect(() => {
     if (state === "edit" && comment) {

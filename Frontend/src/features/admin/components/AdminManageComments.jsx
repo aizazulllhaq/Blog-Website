@@ -7,7 +7,7 @@ const AdminManageComments = ({ blogId }) => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/v1/comments?blogId=${blogId}`);
+        const response = await axios.get(`http://localhost:8080/api/v1/admin/comments`);
         setComments(response.data);
       } catch (error) {
         console.error('Error fetching comments:', error);

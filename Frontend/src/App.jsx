@@ -14,18 +14,18 @@ import Problem from "./Problem";
 
 const App = () => {
   return (
-    <BrowserRouter basename="/Blog-Wesbite"> {/* Use basename if your app is in a subdirectory */}
+    <BrowserRouter > {/* Use basename if your app is in a subdirectory */}
       <Routes>
-        <Route path="/Blog-Wesbite" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Register />} />
-        <Route path="/blogs/:id" element={<BlogDetailPage />} />
+        <Route path="/blogs/:blogId" element={<BlogDetailPage />} />
         <Route path="/blogPost" element={<MainPage />} />
         <Route path="/admin-login" element={<AdminLoginPage />} />
         <Route path="/admin-dashboard" element={<AdminDashboardPage />} />
         <Route path="/blogs/new" element={<NewBlogPage />} />
         <Route path="/blogs/edit/:id" element={<NewBlogPage state={"edit"} />} />
-        <Route path="/blogs/:blogID/comment/:commentId" element={<EditCommentPage />} />
+        <Route path="/blogs/:blogID/comments/:commentId" element={<EditCommentPage />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/problem" element={<Problem />} />
       </Routes>

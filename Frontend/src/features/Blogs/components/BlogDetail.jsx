@@ -46,13 +46,13 @@ const BlogDetail = ({blog}) => {
     <section className="max-w-[1050px] mx-auto flex flex-col justify-center space-y-[40px] p-[30px]">
       {/* Blog Image */}
       <div className="flex justify-center items-center">
-        <img src={blog.img} alt={blog.title} className="w-[800px] rounded-[10px]" />
+        <img src={blog.image} alt={blog.title} className="w-[800px] rounded-[10px]" />
       </div>
       <h1 className="text-4xl font-bold text-center">{blog.title}</h1>
       <div className="flex items-center space-x-4">
-        <img src={authorImage} alt={blog.author} className="w-10 h-10 rounded-full" />
+        <img src={authorImage} alt={blog.author.username} className="w-10 h-10 rounded-full" />
         <div>
-          <p className="font-semibold">{blog.author}</p>
+          <p className="font-semibold">{blog.author.username}</p>
           <p className="text-gray-600">{blog.uploadTime}</p>
         </div>
       </div>
