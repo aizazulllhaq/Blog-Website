@@ -1,4 +1,4 @@
-import wrapAsync from "../../utils/wrapAsync";
+import wrapAsync from "../../utils/wrapAsync.js";
 
 export const createUser = wrapAsync(async (req, res, next) => {});
 

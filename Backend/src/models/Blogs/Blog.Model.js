@@ -20,7 +20,7 @@ const blogSchema = new Schema(
                 ref: "BlogsTags",
             },
         ],
-        author_id: {
+        author: {
             type: Schema.Types.ObjectId,
             ref: "User",
         },

@@ -34,7 +34,6 @@ export const getCommentsByBlogIdAsync = createAsyncThunk(
 export const updateCommentAsync = createAsyncThunk(
   "comment/updateComment",
   async ({ comment, cID }) => {
-    console.log(comment, cID);
     return response;
   }
 );

@@ -1,15 +1,26 @@
-import express from "express";
+import express, { urlencoded } from "express";
 import ApiError from "./utils/ApiError.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
+import { ORIGIN } from "./constant.js";
+import bodyParser from "body-parser";
 
 // App
 const app = express();
 
 // Middlewares
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(
+    cors({
+        origin: ORIGIN,
+        credentials: true,
+    })
+);
+
 app.use(cookieParser());
-app.use(checkAuthentication());
+app.use(checkAuthentication);
 
 // Routers
 import usersRouter from "./routers/Users/Users.Routes.js";
@@ -24,11 +35,7 @@ import {
 } from "./middlewares/Auth.js";
 
 app.use("/api/v1/users", usersRouter);
-app.use(
-    "/api/v1/admin/users",
-    restrictToSecureRoutes(["ADMIN"]),
-    adminUsersRouter
-);
+app.use("/api/v1/admin/users", adminUsersRouter);
 app.use("/api/v1/blogs", blogsRouter);
 app.use(
     "/api/v1/admin/blogs",

@@ -1,13 +1,15 @@
-import Comment from "../../models/Comments/Comment.Model";
-import ApiError from "../../utils/ApiError";
-import ApiResponse from "../../utils/ApiResponse";
-import wrapAsync from "../../utils/wrapAsync";
+import Comment from "../../models/Comments/Comment.Model.js";
+import ApiError from "../../utils/ApiError.js";
+import ApiResponse from "../../utils/ApiResponse.js";
+import wrapAsync from "../../utils/wrapAsync.js";
 
 // getCommentById - editComment
 export const getCommentById = wrapAsync(async (req, res, next) => {
     const { id } = req.params;
 
-    const comment = await Comment.findById(id);
+    const comment = await Comment.findById(id).select(
+        "name comment blog_id -_id"
+    );
 
     if (!comment) return next(new ApiError(404, "Comment Not Found", false));
 

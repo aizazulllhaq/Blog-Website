@@ -1,6 +1,6 @@
 import wrapAsync from "../../utils/wrapAsync.js";
 import Blog from "../../models/Blogs/Blog.Model.js";
-import BlogsTags from "../../models/Blogs/BlogTags.Model.js";
+import { BlogsTags } from "../../models/Blogs/BlogsTags.Model.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import ApiError from "../../utils/ApiError.js";
 
@@ -8,12 +8,14 @@ export const createBlog = wrapAsync(async (req, res, next) => {
     const { title, content, tags } = req.body;
 
     const blogImg = req.file;
+    if (!blogImg)
+        return next(new ApiError(400, "file image is required", false));
     const UID = req.user.id;
 
-    const tagPromises = tags.map(async (tag) => {
-        let tag = await BlogsTags.findOne({ name: tag });
+    const tagPromises = tags.map(async (tagName) => {
+        let tag = await BlogsTags.findOne({ name: tagName });
         if (!tag) {
-            tag = await BlogsTags.create({ name: tag });
+            tag = await BlogsTags.create({ name: tagName });
         }
         return tag._id;
     });
@@ -34,9 +36,15 @@ export const createBlog = wrapAsync(async (req, res, next) => {
 });
 
 export const getAllBlogs = wrapAsync(async (req, res, next) => {
-    const blogs = await Blog.find({});
+    const blogs = await Blog.find({}).populate("author", "username").exec();
 
-    res.status(200).json(new ApiResponse(true, "All Blogs", blogs));
+    const uBlogs = blogs.map((blog) => {
+        // blog.author_id=blog.author_id.username
+        const blogObject = blog.toObject();
+        blog.author = blog.author.username;
+        return blogObject;
+    });
+    res.status(200).json(new ApiResponse(true, "All Blogs", uBlogs));
 });
 
 export const editBlog = wrapAsync(async (req, res, next) => {
@@ -59,7 +67,7 @@ export const updateBlog = wrapAsync(async (req, res, next) => {
 
     if (!blog) return next(new ApiError(404, "Blog Not Found", false));
 
-    if (blog.author !== UID)
+    if (blog.author.toString() !== UID)
         return next(new ApiError(401, "Unauthorized Access", false));
 
     if (blog.title !== title) {
@@ -71,7 +79,17 @@ export const updateBlog = wrapAsync(async (req, res, next) => {
     }
 
     if (blog.tags !== tags) {
-        blog.tags = tags;
+        const tagPromises = tags.map(async (tagName) => {
+            let tag = await BlogsTags.findOne({ name: tagName });
+            if (!tag) {
+                tag = await BlogsTags.create({ name: tagName });
+            }
+            return tag._id;
+        });
+
+        const tagsIDs = await Promise.all(tagPromises);
+
+        blog.tags = tagsIDs;
     }
 
     if (blog.image.split("-")[1] !== blogImage.originalname) {

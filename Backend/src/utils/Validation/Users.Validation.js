@@ -1,4 +1,4 @@
-import { check } from "express-validation";
+import { check } from "express-validator";
 
 export const loginValidation = [
     check("email", "Email is required")

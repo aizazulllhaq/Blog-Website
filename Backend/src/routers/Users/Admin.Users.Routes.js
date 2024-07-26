@@ -1,16 +1,22 @@
 import { Router } from "express";
-import { signUpValidation } from "../../utils/Validation/Users.Validation";
-import { validate } from "../../utils/Validation/validate";
 import {
+    loginValidation,
+    signUpValidation,
+} from "../../utils/Validation/Users.Validation.js";
+import { validate } from "../../utils/Validation/validate.js";
+import {
+    adminLogin,
     deleteUser,
     editUser,
     getAllUsers,
     updateUser,
-} from "../../controllers/Users/Admin.Users.Controller";
+} from "../../controllers/Users/Admin.Users.Controller.js";
 
 const adminUsersRouter = Router();
 
+// api/v1/admin/users
 adminUsersRouter
+    .post("/login", adminLogin)
     .get("/", signUpValidation, validate, getAllUsers)
     .get("/:id", validate, editUser)
     .put("/:id", validate, updateUser)
