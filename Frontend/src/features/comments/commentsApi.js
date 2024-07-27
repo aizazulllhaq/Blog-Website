@@ -1,9 +1,15 @@
 import axios from "axios";
 
+// Set up axios to send cookies with requests
+const apiClient = axios.create({
+  baseURL: "http://localhost:8080/api/v1",
+  withCredentials: true, // Include cookies in cross-origin requests
+});
+
 export async function newComment(commentData, blogId) {
   try {
-    const response = await axios.post(
-      `http://localhost:8080/api/v1/comments/${blogId}/new`,
+    const response = await apiClient.post(
+      `/comments/${blogId}/new`,
       commentData,
       {
         headers: {
@@ -21,11 +27,9 @@ export async function commentList(blogId) {
   let response;
   try {
     if (blogId) {
-      response = await axios.get(
-        `http://localhost:8080/api/v1/comments/${blogId}`
-      );
+      response = await apiClient.get(`/comments/${blogId}`);
     } else {
-      response = await axios.get("http://localhost:8080/api/v1/comments");
+      response = await apiClient.get("/admin/comments");
     }
     return response.data.data;
   } catch (error) {
@@ -33,12 +37,10 @@ export async function commentList(blogId) {
   }
 }
 
-export async function getCommentByBlogId(blogId) {
+export async function getCommentById(cID) {
   try {
-    const response = await axios.get(
-      `http://localhost:8080/api/v1/comments/${blogId}`
-    );
-    return response.data[0];
+    const response = await apiClient.get(`/admin/comments/${cID}`);
+    return response.data.data;
   } catch (error) {
     console.log("Error occurred:", error.message);
   }
@@ -46,15 +48,12 @@ export async function getCommentByBlogId(blogId) {
 
 export async function updateComment(comment, cID) {
   try {
-    const response = await axios.put(
-      `http://localhost:8080/api/v1/admin/comments/${cID}`,
-      comment,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await apiClient.put(`/admin/comments/${cID}`, comment, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log("update comment : ", response);
     return response.data;
   } catch (error) {
     console.log("Error occurred:", error.message);
@@ -63,9 +62,7 @@ export async function updateComment(comment, cID) {
 
 export async function deleteComment(cID) {
   try {
-    const response = await axios.delete(
-      `http://localhost:8080/api/v1/admin/comments/${cID}`
-    );
+    const response = await apiClient.delete(`/admin/comments/${cID}`);
     return response;
   } catch (error) {
     console.log("Error Occurred : ", error.message);

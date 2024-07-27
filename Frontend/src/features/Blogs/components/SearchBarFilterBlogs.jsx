@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBlogsTagsAsync, getFilterBlogsAsync } from "../blogSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SearchBarFilterBlogs = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [noResults, setNoResults] = useState(false);
   const dispatch = useDispatch();
   const { blogs, blogsTags } = useSelector((state) => state.blog);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getBlogsTagsAsync());
@@ -15,14 +16,9 @@ const SearchBarFilterBlogs = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    console.log("search is ",searchTerm)
-    console.log("tags under search is ",blogsTags)
-
     if (searchTerm.length) {
       if (blogsTags.includes(searchTerm.toUpperCase())) {
         dispatch(getFilterBlogsAsync(searchTerm));
-    console.log("a search is ",searchTerm)
-
       } else {
         setNoResults(true);
       }
@@ -77,9 +73,9 @@ const SearchBarFilterBlogs = () => {
           ) : (
             blogs &&
             blogs.map((blog, index) => (
-              <Link
+              <div
                 key={index}
-                to={`/blogs/${blog._id}`}
+                onClick={() => navigate(`/blogs/${blog._id}`)}
                 className="blog grid grid-rows-[1fr,auto,auto] gap-4 text-white p-5 max-w-[460px] bg-gray-950 border-[1px] border-gray-900 hover:bg-blue-950 hover:opacity-80 rounded-[7px]"
               >
                 <div className="img-title">
@@ -113,7 +109,7 @@ const SearchBarFilterBlogs = () => {
                     </span>
                   ))}
                 </div>
-              </Link>
+              </div>
             ))
           )}
         </div>

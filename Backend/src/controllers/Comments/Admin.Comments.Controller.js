@@ -3,6 +3,12 @@ import ApiError from "../../utils/ApiError.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import wrapAsync from "../../utils/wrapAsync.js";
 
+export const getCommentList = wrapAsync(async (req, res, next) => {
+    const commentsList = await Comment.find({}).select("name comment blog_id _id");
+
+    res.status(200).json(new ApiResponse(true, "Comments List", commentsList));
+});
+
 // getCommentById - editComment
 export const getCommentById = wrapAsync(async (req, res, next) => {
     const { id } = req.params;

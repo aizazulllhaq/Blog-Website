@@ -22,19 +22,15 @@ const NewBlog = ({ state }) => {
     const formData = new FormData();
     formData.append("title", data.title || "");
     formData.append("content", data.content || "");
-    formData.append("author", data.author || "");
-    formData.append(
-      "tagsArray",
-      data.tagsArray ? data.tagsArray.split(",").join(",") : ""
-    );
+    const tagsArray = data.tags.split(",").map((tag) => tag.trim());
+    formData.append("tags", JSON.stringify(tagsArray));
 
-    if (data.file && data.file.length > 0) {
-      formData.append("file", data.file[0]);
+    if (data.image && data.image.length > 0) {
+      formData.append("image", data.image[0]);
     }
 
     if (state === "edit") {
-      dispatch(updateBlogAsync({ blogData: formData, id: blog.id }));
-      console.log({ blogData: formData, id: blog.id });
+      dispatch(updateBlogAsync({ blogData: formData, blogId: id }));
     } else {
       dispatch(createBlogAsync(formData));
     }
@@ -53,8 +49,9 @@ const NewBlog = ({ state }) => {
       setValue("title", blog.title);
       setValue("content", blog.content);
       setValue("author", blog.author);
-      if (Array.isArray(blog.tagsArray)) {
-        setValue("tagsArray", blog.tagsArray.join(","));
+      if (Array.isArray(blog.tags)) {
+        const tagsString = blog.tags.map((tag) => tag.name).join(",");
+        setValue("tags", tagsString);
       }
       setImagePreview(blog.img); // Set initial image preview to the existing blog image
     }
@@ -94,6 +91,7 @@ const NewBlog = ({ state }) => {
             Content
           </label>
           <textarea
+            {...register("content", { required: "Content is required" })}
             id="content"
             rows="4"
             className="w-full p-2 rounded bg-gray-700 text-white resize-none"
@@ -101,25 +99,13 @@ const NewBlog = ({ state }) => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="author" className="block text-lg mb-2">
-            Author
-          </label>
-          <input
-            type="text"
-            {...register("author", { required: "Author is required" })}
-            id="author"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label htmlFor="tagsArray" className="block text-lg mb-2">
+          <label htmlFor="tags" className="block text-lg mb-2">
             Tags (comma separated)
           </label>
           <input
             type="text"
-            {...register("tagsArray", { required: "Tags are required" })}
-            id="tagsArray"
+            {...register("tags", { required: "Tags are required" })}
+            id="tags"
             placeholder="Enter tags, separated by commas"
             className="w-full p-2 bg-gray-700 text-white rounded border border-gray-600"
           />
@@ -140,8 +126,7 @@ const NewBlog = ({ state }) => {
           </div>
           <input
             type="file"
-            {...register("file")}
-            accept="image/*"
+            {...register("image")}
             className="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 file:border-0 file:bg-blue-600 file:text-white file:py-2 file:px-4 file:rounded file:cursor-pointer hover:file:bg-blue-700"
             onChange={handleImageChange}
           />

@@ -28,11 +28,24 @@ const upload = multer({
         }
     },
 });
+
+const parseTags = (req, res, next) => {
+    if (req.body.tags) {
+        try {
+            req.body.tags = JSON.parse(req.body.tags);
+        } catch (error) {
+            return res.status(400).json({ message: "Invalid tags format" });
+        }
+    }
+    next();
+};
+
 // api/v1/admin/blogs/
 adminBlogRouter
     .post(
         "/new",
         upload.single("image"),
+        parseTags,
         createBlogValidation,
         validate,
         createBlog

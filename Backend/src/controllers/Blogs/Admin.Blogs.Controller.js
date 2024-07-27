@@ -44,14 +44,17 @@ export const getAllBlogs = wrapAsync(async (req, res, next) => {
         blog.author = blog.author.username;
         return blogObject;
     });
-    
+
     res.status(200).json(new ApiResponse(true, "All Blogs", uBlogs));
 });
 
 export const editBlog = wrapAsync(async (req, res, next) => {
     const { blogId } = req.params;
 
-    const blog = await Blog.findById(blogId);
+    const blog = await Blog.findById(blogId)
+        .populate("author", "username -_id")
+        .populate("tags", "name -_id")
+        .exec();
 
     if (!blog) return next(new ApiError(404, "Blog Not Found", false));
 
@@ -61,46 +64,55 @@ export const editBlog = wrapAsync(async (req, res, next) => {
 export const updateBlog = wrapAsync(async (req, res, next) => {
     const { blogId } = req.params;
     const { title, content, tags } = req.body;
-    const blogImage = req.file;
-    const UID = req.user.id;
+    const blogImg = req.file;
 
+    // Find the existing blog by ID
     const blog = await Blog.findById(blogId);
-
-    if (!blog) return next(new ApiError(404, "Blog Not Found", false));
-
-    if (blog.author.toString() !== UID)
-        return next(new ApiError(401, "Unauthorized Access", false));
-
-    if (blog.title !== title) {
-        blog.title = title;
+    if (!blog) {
+        return next(new ApiError(404, "Blog not found"));
     }
 
-    if (blog.content !== content) {
-        blog.content = content;
+    // Extract the tag names from the request
+    const tagsArray = Array.isArray(tags) ? tags : JSON.parse(tags); // Ensure tags is an array of strings
+
+    // Compare the existing tags (ObjectIds) with the new tags
+    const existingTags = await BlogsTags.find({ _id: { $in: blog.tags } }); // Get existing tags from the database
+
+    // Create a set of existing tag names for comparison
+    const existingTagNames = existingTags.map((tag) => tag.name);
+
+
+    // Determine which tags are new
+    const tagsToCreate = tagsArray.filter(
+        (tagName) => !existingTagNames.includes(tagName)
+    );
+
+    // Create new tags if necessary
+    const tagPromises = tagsToCreate.map(async (tagName) => {
+        let tag = await BlogsTags.findOne({ name: tagName });
+        if (!tag) {
+            tag = await BlogsTags.create({ name: tagName });
+        }
+        return tag._id;
+    });
+
+    const newTagIds = await Promise.all(tagPromises);
+
+    // Combine existing tag IDs with new tag IDs
+    const updatedTagIds = [...new Set([...blog.tags, ...newTagIds])];
+
+    // Update the blog with new tag IDs
+    blog.title = title || blog.title;
+    blog.content = content || blog.content;
+    if (blogImg) {
+        blog.image = blogImg.path; // Update the image if a new one is provided
     }
-
-    if (blog.tags !== tags) {
-        const tagPromises = tags.map(async (tagName) => {
-            let tag = await BlogsTags.findOne({ name: tagName });
-            if (!tag) {
-                tag = await BlogsTags.create({ name: tagName });
-            }
-            return tag._id;
-        });
-
-        const tagsIDs = await Promise.all(tagPromises);
-
-        blog.tags = tagsIDs;
-    }
-
-    if (blog.image.split("-")[1] !== blogImage.originalname) {
-        blog.image = blogImage.originalname;
-    }
+    blog.tags = updatedTagIds;
 
     await blog.save();
 
     res.status(200).json(
-        new ApiResponse(true, "Blog Updated Successfully", {})
+        new ApiResponse(true, "Blog updated successfully", blog)
     );
 });
 

@@ -3,12 +3,13 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
-  getCommentsByBlogIdAsync,
+  getCommentsByIdAsync,
   newCommentAsync,
   updateCommentAsync,
 } from "../commentsSlice";
 
-const CommentsSection = ({ state,blogID }) => {
+const CommentsSection = ({ state }) => {
+  const { blogId, commentId } = useParams();
   const dispatch = useDispatch();
   const comment = useSelector((state) => state.comment.comment);
   const {
@@ -22,18 +23,18 @@ const CommentsSection = ({ state,blogID }) => {
   const handleOnSubmit = (data) => {
     let commentData;
     if (state !== "edit") {
-      commentData = { ...data, blog_id: blogID };
-      dispatch(newCommentAsync({ commentData, blogId:blogID }));
+      commentData = { ...data, blog_id: blogId };
+      dispatch(newCommentAsync({ commentData, blogId: blogId }));
     } else {
-      commentData = { ...data, blogId: blogID };
-      dispatch(updateCommentAsync({ comment: commentData  }));
+      commentData = { ...data, blogId: blogId };
+      dispatch(updateCommentAsync({ comment: commentData, cID: commentId }));
     }
     reset();
   };
 
   useEffect(() => {
     if (state === "edit") {
-      dispatch(getCommentsByBlogIdAsync());
+      dispatch(getCommentsByIdAsync(commentId));
     }
   }, []);
 

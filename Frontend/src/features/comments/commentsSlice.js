@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   commentList,
   deleteComment,
-  getCommentByBlogId,
+  getCommentById,
   newComment,
   updateComment,
 } from "./commentsApi";
@@ -23,10 +23,10 @@ export const commentsListAsync = createAsyncThunk(
   }
 );
 
-export const getCommentsByBlogIdAsync = createAsyncThunk(
-  "comment/getCommentByBlogId",
+export const getCommentsByIdAsync = createAsyncThunk(
+  "comment/getCommentById",
   async (cID) => {
-    const response = await getCommentByBlogId(cID);
+    const response = await getCommentById(cID);
     return response;
   }
 );
@@ -34,6 +34,7 @@ export const getCommentsByBlogIdAsync = createAsyncThunk(
 export const updateCommentAsync = createAsyncThunk(
   "comment/updateComment",
   async ({ comment, cID }) => {
+    const response = await updateComment(comment, cID);
     return response;
   }
 );
@@ -83,14 +84,14 @@ export const commentSlice = createSlice({
         state.status = "idle";
         state.error = action.error;
       })
-      .addCase(getCommentsByBlogIdAsync.pending, (state) => {
+      .addCase(getCommentsByIdAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getCommentsByBlogIdAsync.fulfilled, (state, action) => {
+      .addCase(getCommentsByIdAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.comment = action.payload;
       })
-      .addCase(getCommentsByBlogIdAsync.rejected, (state, action) => {
+      .addCase(getCommentsByIdAsync.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.error;
       })

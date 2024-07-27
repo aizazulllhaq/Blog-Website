@@ -1,8 +1,20 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { adminLogoutAsync } from "../admin/adminSlice";
 
-const Navbar = () => {
+const Navbar = ({ state = "normal" }) => {
   const [open, setOpen] = useState(false);
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleAdminLogout = async () => {
+    await dispatch(adminLogoutAsync());
+    navigate("/admin-login");
+  };
+
+
 
   return (
     <section className="w-full relative top-0 left-0 z-[50] py-7 md:px-[20px] bg-gray-950">
@@ -21,9 +33,7 @@ const Navbar = () => {
             onClick={() => setOpen(!open)}
             className="text-xl sm:text-white bg-yellow-500 md:px-0 px-1 absolute right-0 top-1/2 transform -translate-y-1/2 cursor-pointer md:hidden md:mr-0 mr-[10px]"
           >
-            {
-              open ? "o" : "x"
-            }
+            {open ? "X" : "O"}
           </button>
           <ul
             className={`md:flex justify-center items-center md:space-x-[20px] md:space-y-0 space-y-[10px] md:static ${
@@ -33,6 +43,11 @@ const Navbar = () => {
             <li className="md:px-[15px] px-[10px] md:py-[10px] py-[5px] border border-red-400 rounded-[4px] hover:bg-red-400 hover:text-white ">
               <Link to={"/"}>Home</Link>
             </li>
+            {isAdmin && (
+              <li className="md:px-[15px] px-[10px] md:py-[10px] py-[5px] border border-red-400 rounded-[4px] hover:bg-red-400 hover:text-white ">
+                <button onClick={() => handleAdminLogout()}>Logout</button>
+              </li>
+            )}
             {/* <li>
               <Link
                 to={"/signin"}

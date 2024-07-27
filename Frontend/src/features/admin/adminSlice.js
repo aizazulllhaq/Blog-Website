@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { adminLogin } from "./adminApi";
+import { adminLogin, adminLogout } from "./adminApi";
 
 export const adminLoginAsync = createAsyncThunk(
   "auth/adminLogin",
@@ -9,10 +9,19 @@ export const adminLoginAsync = createAsyncThunk(
   }
 );
 
+export const adminLogoutAsync = createAsyncThunk(
+  "auth/adminLogout",
+  async () => {
+    const response = await adminLogout();
+    return response;
+  }
+);
+
 const initialState = {
-  error: null,
   status: "idle",
-  admin: null,
+  isAdmin: false,
+  accessToken: null,
+  error: null,
 };
 
 export const adminSlice = createSlice({
@@ -26,9 +35,21 @@ export const adminSlice = createSlice({
       })
       .addCase(adminLoginAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.admin = action.payload;
+        state.isAdmin = true;
+        state.accessToken = action.payload.data;
       })
       .addCase(adminLoginAsync.rejected, (state, action) => {
+        state.status = "idle";
+        state.error = action.error;
+      })
+      .addCase(adminLogoutAsync.pending, (state) => {
+        state.status = "Loading";
+      })
+      .addCase(adminLogoutAsync.fulfilled, (state) => {
+        state.status = "idle";
+        state.isAdmin = false;
+      })
+      .addCase(adminLogoutAsync.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.error;
       });

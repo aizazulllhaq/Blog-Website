@@ -14,27 +14,27 @@ export const createBlogAsync = createAsyncThunk(
   "blog/createBlog",
   async (blogData) => {
     const response = await createBlog(blogData);
-    return response.data;
+    return response;
   }
 );
 
 export const editBlogAsync = createAsyncThunk("blog/editBlog", async (id) => {
   const response = await editBlog(id);
-  return response.data[0];
+  return response;
 });
 
 export const updateBlogAsync = createAsyncThunk(
   "blog/updateBlog",
-  async ({blogData,id}) => {
-    const response = await updateBlog(blogData,id);
-    return response.data;
+  async ({blogData,blogId}) => {
+    const response = await updateBlog(blogData,blogId);
+    return response;
   }
 );
 
 export const deleteBlogAsync = createAsyncThunk(
   "blog/deleteBlog",
-  async (id) => {
-    const response = await deleteBlog(id);
+  async (blogId) => {
+    const response = await deleteBlog(blogId);
     return response;
   }
 );

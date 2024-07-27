@@ -32,7 +32,6 @@ export const getBlog = wrapAsync(async (req, res, next) => {
 
 export const getAllORFilterBlogs = wrapAsync(async (req, res, next) => {
     const { search } = req.query;
-    console.log(search);
 
     if (!search || search.length === 0) {
         const blogs = await Blog.find({})
@@ -72,7 +71,6 @@ export const getAllORFilterBlogs = wrapAsync(async (req, res, next) => {
         };
     });
 
-    console.log(transformedBlogs);
 
     res.status(200).json(
         new ApiResponse(true, "Filter Blogs", transformedBlogs)

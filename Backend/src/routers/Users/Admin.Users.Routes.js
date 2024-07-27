@@ -10,6 +10,7 @@ import {
     editUser,
     getAllUsers,
     updateUser,
+    logoutAdmin
 } from "../../controllers/Users/Admin.Users.Controller.js";
 
 const adminUsersRouter = Router();
@@ -20,6 +21,7 @@ adminUsersRouter
     .get("/", signUpValidation, validate, getAllUsers)
     .get("/:id", validate, editUser)
     .put("/:id", validate, updateUser)
-    .delete("/:id", validate, deleteUser);
+    .delete("/:id", validate, deleteUser)
+    .post("/logout",logoutAdmin);
 
 export default adminUsersRouter;

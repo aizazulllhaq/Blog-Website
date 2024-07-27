@@ -6,7 +6,7 @@ import Footer from "../features/Layouts/Footer";
 const AdminLoginPage = () => {
   return (
     <>
-      <Navbar />
+      <Navbar/>
       <Login />
       <Footer />
     </>
