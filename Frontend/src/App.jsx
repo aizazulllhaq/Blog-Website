@@ -59,7 +59,6 @@ const App = () => {
           }
         />
         <Route path="*" element={<PageNotFound />} />
-        <Route path="/problem" element={<Problem />} />
       </Routes>
     </BrowserRouter>
   );
