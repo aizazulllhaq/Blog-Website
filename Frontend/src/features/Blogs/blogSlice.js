@@ -25,9 +25,9 @@ export const editBlogAsync = createAsyncThunk("blog/editBlog", async (id) => {
 
 export const updateBlogAsync = createAsyncThunk(
   "blog/updateBlog",
-  async ({blogData,blogId}) => {
-    const response = await updateBlog(blogData,blogId);
-    return response;
+  async ({ blogData, blogId }) => {
+    const response = await updateBlog(blogData, blogId);
+    return response.data;
   }
 );
 
@@ -64,7 +64,7 @@ export const getFilterBlogsAsync = createAsyncThunk(
   "blog/getFilterBlogs",
   async (searchTerm) => {
     const response = await getFilterBlogs(searchTerm);
-    return response;
+    return response.data;
   }
 );
 
@@ -74,6 +74,7 @@ const initialState = {
   status: "idle",
   error: null,
   blogsTags: null,
+  isUpdate: false,
 };
 
 export const blogSlice = createSlice({
@@ -108,6 +109,7 @@ export const blogSlice = createSlice({
       })
       .addCase(updateBlogAsync.fulfilled, (state, action) => {
         state.status = "idle";
+        state.isUpdate = true;
         state.blog = action.payload;
       })
       .addCase(updateBlogAsync.rejected, (state, action) => {

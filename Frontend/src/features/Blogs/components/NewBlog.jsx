@@ -53,7 +53,7 @@ const NewBlog = ({ state }) => {
         const tagsString = blog.tags.map((tag) => tag.name).join(",");
         setValue("tags", tagsString);
       }
-      setImagePreview(blog.img); // Set initial image preview to the existing blog image
+      setImagePreview(blog.image.url); // Set initial image preview to the existing blog image
     }
   }, [blog, state, setValue]);
 

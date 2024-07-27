@@ -12,6 +12,7 @@ import NewBlogPage from "./Pages/NewBlogPage";
 import EditCommentPage from "./Pages/EditCommentPage";
 import Problem from "./Problem";
 import Protected from "./features/admin/components/Protected";
+import { useState } from "react";
 
 const App = () => {
   return (
@@ -24,7 +25,7 @@ const App = () => {
         <Route path="/signup" element={<Register />} />
         <Route path="/blogs/:blogId" element={<BlogDetailPage />} />
         <Route path="/blogPost" element={<MainPage />} />
-        <Route path="/admin-login" element={<AdminLoginPage />} />
+        <Route path="/admin-login" element={<AdminLoginPage/>} />
         <Route
           path="/admin-dashboard"
           element={

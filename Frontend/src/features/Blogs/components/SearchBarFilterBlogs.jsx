@@ -7,7 +7,7 @@ const SearchBarFilterBlogs = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [noResults, setNoResults] = useState(false);
   const dispatch = useDispatch();
-  const { blogs, blogsTags } = useSelector((state) => state.blog);
+  const { blogs, blogsTags, isUpdate } = useSelector((state) => state.blog);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const SearchBarFilterBlogs = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     if (searchTerm.length) {
-      if (blogsTags.includes(searchTerm.toUpperCase())) {
+      if (blogsTags.includes(searchTerm)) {
         dispatch(getFilterBlogsAsync(searchTerm));
       } else {
         setNoResults(true);
@@ -33,7 +33,7 @@ const SearchBarFilterBlogs = () => {
     if (searchTerm === "") {
       dispatch(getFilterBlogsAsync(searchTerm));
     }
-  }, [searchTerm]);
+  }, [dispatch, searchTerm, isUpdate]);
 
   return (
     <section className="w-full min-h-screen flex flex-col">
@@ -81,7 +81,7 @@ const SearchBarFilterBlogs = () => {
                 <div className="img-title">
                   <div className="relative w-full h-[200px] overflow-hidden">
                     <img
-                      src={blog.image}
+                      src={blog.image.url}
                       alt={blog.title}
                       className="absolute top-0 left-0 w-full h-full rounded-[4px]"
                     />

@@ -4,7 +4,7 @@ import {
     CLOUDINARY_API_KEY,
     CLOUDINARY_API_SECRET,
     CLOUDINARY_CLOUD_NAME,
-} from "../constant";
+} from "../constant.js";
 
 cloudinary.config({
     cloud_name: CLOUDINARY_CLOUD_NAME,
@@ -14,7 +14,7 @@ cloudinary.config({
 
 export const uploadOnCloudinary = async (localFilePath) => {
     try {
-        const response = cloudinary.uploader.upload(localFilePath, {
+        const response = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto",
         });
         console.log(`File is uploaded on cloudinary : ${response.url}`);
@@ -22,7 +22,7 @@ export const uploadOnCloudinary = async (localFilePath) => {
         // delete from locally
         fs.unlinkSync(localFilePath);
 
-        return response;
+        return response;    
     } catch (error) {
         // delete file from local
         fs.unlinkSync(localFilePath);

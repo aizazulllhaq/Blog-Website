@@ -43,7 +43,7 @@ const AdminManageBlogs = () => {
       </h2>
       {blogs &&
         blogs.map((blog) => (
-          <div key={blog.id} className="bg-gray-900 p-4 mb-4 rounded-lg">
+          <div key={blog._id} className="bg-gray-900 p-4 mb-4 rounded-lg">
             <h3 className="md:text-xl text-md font-semibold text-white py-[5px]">
               {blog.title}
             </h3>

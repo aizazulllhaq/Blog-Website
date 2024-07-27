@@ -31,7 +31,7 @@ export async function updateBlog(blogData, blogId) {
     const response = await apiClient.put(`/admin/blogs/${blogId}`, blogData, {
       "Content-Type": "multipart/form-data",
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.log("Error Occurred : ", error.message);
   }
@@ -81,7 +81,7 @@ export async function getFilterBlogs(searchTerm) {
     } else {
       response = await apiClient.get("/blogs");
     }
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.log("Error Occurred : ", error.message);
   }

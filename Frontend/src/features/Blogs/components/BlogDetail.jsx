@@ -46,7 +46,7 @@ const BlogDetail = ({blog}) => {
     <section className="max-w-[1050px] mx-auto flex flex-col justify-center space-y-[40px] p-[30px]">
       {/* Blog Image */}
       <div className="flex justify-center items-center">
-        <img src={blog.image} alt={blog.title} className="w-[800px] rounded-[10px]" />
+        <img src={blog.image.url} alt={blog.title} className="w-[800px] rounded-[10px]" />
       </div>
       <h1 className="text-4xl font-bold text-center">{blog.title}</h1>
       <div className="flex items-center space-x-4">

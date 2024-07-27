@@ -3,11 +3,13 @@ import Blog from "../../models/Blogs/Blog.Model.js";
 import { BlogsTags } from "../../models/Blogs/BlogsTags.Model.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import ApiError from "../../utils/ApiError.js";
+import { uploadOnCloudinary } from "../../config/Cloudinary.Config.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export const createBlog = wrapAsync(async (req, res, next) => {
     const { title, content, tags } = req.body;
-
     const blogImg = req.file;
+
     if (!blogImg)
         return next(new ApiError(400, "file image is required", false));
     const UID = req.user.id;
@@ -22,13 +24,21 @@ export const createBlog = wrapAsync(async (req, res, next) => {
 
     const tagsIDs = await Promise.all(tagPromises);
 
-    const blog = await Blog.create({
+    const result = await uploadOnCloudinary(blogImg.path);
+
+    if (!result) return next(new ApiError(400, "File Failed to Upload", false));
+
+    const blog = new Blog({
         title,
         content,
         author: UID,
         tags: tagsIDs,
-        image: blogImg.path,
     });
+
+    blog.image.url = result.secure_url;
+    blog.image.public_id = result.public_id;
+
+    await blog.save();
 
     res.status(201).json(
         new ApiResponse(true, "Blog Created Successfully", blog)
@@ -81,11 +91,21 @@ export const updateBlog = wrapAsync(async (req, res, next) => {
     // Create a set of existing tag names for comparison
     const existingTagNames = existingTags.map((tag) => tag.name);
 
-
     // Determine which tags are new
     const tagsToCreate = tagsArray.filter(
         (tagName) => !existingTagNames.includes(tagName)
     );
+
+    if (blogImg && blogImg.path) {
+        const result = await uploadOnCloudinary(blogImg.path);
+        if (blog.image.public_id !== result.public_id) {
+            if (blog.image.public_id) {
+                await cloudinary.uploader.destroy(blog.image.public_id);
+                blog.image.url = result.secure_url;
+                blog.image.public_id = result.public_id;
+            }
+        }
+    }
 
     // Create new tags if necessary
     const tagPromises = tagsToCreate.map(async (tagName) => {
@@ -98,16 +118,11 @@ export const updateBlog = wrapAsync(async (req, res, next) => {
 
     const newTagIds = await Promise.all(tagPromises);
 
-    // Combine existing tag IDs with new tag IDs
-    const updatedTagIds = [...new Set([...blog.tags, ...newTagIds])];
-
     // Update the blog with new tag IDs
+
     blog.title = title || blog.title;
     blog.content = content || blog.content;
-    if (blogImg) {
-        blog.image = blogImg.path; // Update the image if a new one is provided
-    }
-    blog.tags = updatedTagIds;
+    blog.tags = newTagIds;
 
     await blog.save();
 

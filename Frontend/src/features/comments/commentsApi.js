@@ -53,7 +53,6 @@ export async function updateComment(comment, cID) {
         "Content-Type": "application/json",
       },
     });
-    console.log("update comment : ", response);
     return response.data;
   } catch (error) {
     console.log("Error occurred:", error.message);
