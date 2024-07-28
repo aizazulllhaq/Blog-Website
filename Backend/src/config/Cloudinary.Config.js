@@ -19,7 +19,7 @@ export const uploadOnCloudinary = async (localFilePath) => {
         });
         console.log(`File is uploaded on cloudinary : ${response.url}`);
 
-        // delete from locally
+        // delete file from locally
         fs.unlinkSync(localFilePath);
 
         return response;    
